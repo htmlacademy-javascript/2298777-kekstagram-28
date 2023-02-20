@@ -1,15 +1,24 @@
-'use strict';
+const validateStringLength = (string, length) => string.length <= length;
 
-const validateStringLength = (str, length) => str.length <= length;
-
-const isPalindrome = (str) => {
-  str = str.replaceAll(' ', '').toLowerCase();
-  if (str.length % 2 !== 0) {
-    return str.slice(0, str.length / 2 + 1) ===
-      str.slice(str.length / 2, str.length).split('').reverse().join('');
+const isPalindrome = (string) => {
+  let i = 0;
+  let j = string.length - 1;
+  while (i !== parseInt(string.length / 2, 10)) {
+    if (string[i] === ' ') {
+      i++;
+      continue;
+    }
+    if (string[j] === ' ') {
+      j--;
+      continue;
+    }
+    if (string[i].toLowerCase() !== string[j].toLowerCase()) {
+      return false;
+    }
+    i++;
+    j--;
   }
-  return str.slice(0, str.length / 2) ===
-    str.slice(str.length / 2, str.length).split('').reverse().join('');
+  return true;
 };
 
 const getNumberFromString = (input) => {
@@ -22,13 +31,18 @@ const getNumberFromString = (input) => {
   }
   return result.length !== 0 ? Number(result) : NaN;
 };
-
-const fillStartString = (str, length, filling) => {
-  if (str.length < length) {
-    while (str.length < length) {
-      str = (filling.length + str.length) < length ? filling + str :
-        filling.substring(0, length - str.length) + str;
+const fillStartString = (string, length, filling) => {
+  let result = string;
+  if (result.length < length) {
+    while (result.length < length) {
+      if ((filling.length + result.length) < length) {
+        result = filling + result;
+      } else {
+        result = filling.substring(0, length - result.length) + result;
+      }
     }
   }
-  return str;
+  return result;
 };
+
+export {fillStartString, getNumberFromString, validateStringLength, isPalindrome};
