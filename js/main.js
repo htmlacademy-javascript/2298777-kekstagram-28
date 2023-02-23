@@ -24,12 +24,12 @@ const getRandomNumber = (min, max) => {
 };
 
 const getRandomIdCreator = (min, max) => {
-  const idArray = Array.from({length: max - min + 1}, (_, i) => min + i);
+  const ids = Array.from({length: max - min + 1}, (_, i) => min + i);
 
   return function () {
-    const randomIndex = getRandomNumber(0, idArray.length - 1);
-    const resultId = idArray[randomIndex];
-    idArray.splice(randomIndex, 1);
+    const randomIndex = getRandomNumber(0, ids.length - 1);
+    const resultId = ids[randomIndex];
+    ids.splice(randomIndex, 1);
     return resultId;
   };
 };
