@@ -12,48 +12,45 @@ const DESCRIPTIONS = ['Мое фото', 'Удачный кадр', 'ммммм�
   '✝', '🍆💦'];
 
 const NUMBER_OF_GENERATED_PHOTOS = 25;
+const NUMBER_OF_GENERATED_PHOTO_IDS = 25;
+const NUMBER_OF_GENERATED_URL_IDS = 25;
+const NUMBER_OF_GENERATED_COMMENT_IDS = 250;
+const NUMBER_OF_GENERATED_COMMENTS = 10;
+
 
 const getRandomNumber = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
+  const result = Math.random() * (max - min + 1) + min;
   return Math.floor(result);
 };
 
-const createRandomIdFromRange = (min, max) => {
-  const previousValues = [];
+const getRandomIdCreator = (min, max) => {
+  const idArray = Array.from({length: max - min + 1}, (_, i) => min + i);
 
   return function () {
-    let currentValue = getRandomNumber(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomNumber(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
+    const randomIndex = getRandomNumber(0, idArray.length - 1);
+    const resultId = idArray[randomIndex];
+    idArray.splice(randomIndex, 1);
+    return resultId;
   };
 };
 
-const photoIdGenerator = createRandomIdFromRange(1, 25);
-const photoUrlGenerator = createRandomIdFromRange(1, 25);
-const commentIdGenerator = createRandomIdFromRange(1, 1000);
+const createRandomPhotoId = getRandomIdCreator(1, NUMBER_OF_GENERATED_PHOTO_IDS);
+const createRandomUrlId = getRandomIdCreator(1, NUMBER_OF_GENERATED_URL_IDS);
+const createRandomCommentId = getRandomIdCreator(1, NUMBER_OF_GENERATED_COMMENT_IDS);
 
 const createComments = () => ({
-  id: commentIdGenerator(),
+  id: createRandomCommentId(),
   avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
   message: MESSAGES[getRandomNumber(0, MESSAGES.length - 1)],
   name: NAMES[getRandomNumber(0, NAMES.length - 1)]
 });
 
 const createPhotoDescription = () => ({
-  id: photoIdGenerator(),
-  url: `photos/${photoUrlGenerator()}.jpg`,
+  id: createRandomPhotoId(),
+  url: `photos/${createRandomUrlId()}.jpg`,
   description: DESCRIPTIONS[getRandomNumber(0, DESCRIPTIONS.length - 1)],
   likes: getRandomNumber(15, 200),
-  comments: Array.from({length: getRandomNumber(1, 10)}, createComments)
+  comments: Array.from({length: getRandomNumber(1, NUMBER_OF_GENERATED_COMMENTS)}, createComments)
 });
 
 export const photosWithDescriptions = Array.from({length: NUMBER_OF_GENERATED_PHOTOS}, createPhotoDescription);
