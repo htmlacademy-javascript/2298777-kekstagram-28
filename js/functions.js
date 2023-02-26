@@ -45,4 +45,20 @@ const fillStartString = (string, length, filling) => {
   return result;
 };
 
-export {fillStartString, getNumberFromString, validateStringLength, isPalindrome};
+const getRandomNumber = (min, max) => {
+  const result = Math.random() * (max - min + 1) + min;
+  return Math.floor(result);
+};
+
+const getRandomIdCreator = (min, max) => {
+  const ids = Array.from({length: max - min + 1}, (_, i) => min + i);
+
+  return function () {
+    const randomIndex = getRandomNumber(0, ids.length - 1);
+    const resultId = ids[randomIndex];
+    ids.splice(randomIndex, 1);
+    return resultId;
+  };
+};
+
+export {fillStartString, getNumberFromString, validateStringLength, isPalindrome, getRandomIdCreator, getRandomNumber};
