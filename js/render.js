@@ -1,6 +1,6 @@
 import {createPhotosWithDescriptions} from './data.js';
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const pictureTemplate = document.querySelector('#picture').content;
 const pictureContainer = document.querySelector('.pictures');
 const photosWithDescriptions = createPhotosWithDescriptions();
 const picturesContainerFragment = document.createDocumentFragment();
