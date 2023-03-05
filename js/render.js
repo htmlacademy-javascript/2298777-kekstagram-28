@@ -1,5 +1,5 @@
 import {createPhotosWithDescriptions} from './data.js';
-import {renderBigPicture} from './fullPictureRender.js';
+import {renderBigPicture} from './full-picture-render.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
