@@ -61,4 +61,7 @@ const getRandomIdCreator = (min, max) => {
   };
 };
 
-export {fillStartString, getNumberFromString, validateStringLength, isPalindrome, getRandomIdCreator, getRandomNumber};
+const isEscapeKeydown = (evt) => evt.key === 'Escape';
+
+export {fillStartString, getNumberFromString, validateStringLength,
+  isPalindrome, getRandomIdCreator, getRandomNumber, isEscapeKeydown};
