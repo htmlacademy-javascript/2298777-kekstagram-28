@@ -10,9 +10,9 @@ const renderPictures = () => {
   photosWithDescriptions.forEach((photo) => {
     const pictureContainerItem = pictureTemplate.cloneNode(true);
 
-    pictureContainerItem.querySelector('.picture__img').src = photo['url'];
-    pictureContainerItem.querySelector('.picture__comments').textContent = photo['comments'].length;
-    pictureContainerItem.querySelector('.picture__likes').textContent = photo['likes'];
+    pictureContainerItem.querySelector('.picture__img').src = photo.url;
+    pictureContainerItem.querySelector('.picture__comments').textContent = photo.comments.length;
+    pictureContainerItem.querySelector('.picture__likes').textContent = photo.likes;
 
     pictureContainerItem.addEventListener('click', (evt) => {
       renderBigPicture(evt, photo);

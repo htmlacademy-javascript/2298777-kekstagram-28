@@ -21,18 +21,18 @@ const hideElements = () => {
 
 const addBigPictureData = (photo) => {
   bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo['url'];
-  bigPicture.querySelector('.likes-count').textContent = photo['likes'];
-  bigPicture.querySelector('.comments-count').textContent = photo['comments'].length;
-  bigPicture.querySelector('.social__caption').textContent = photo['description'];
+  bigPicture.querySelector('.likes-count').textContent = photo.likes;
+  bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = photo.description;
 };
 
 const addCommentData = (photo) => {
   const commentsFragment = document.createDocumentFragment();
   photo['comments'].forEach((comment) => {
     const commentItem = commentsTemplate.cloneNode(true);
-    commentItem.querySelector('img').src = comment['avatar'];
-    commentItem.querySelector('img').alt = comment['name'];
-    commentItem.querySelector('p').textContent = comment['message'];
+    commentItem.querySelector('img').src = comment.avatar;
+    commentItem.querySelector('img').alt = comment.name;
+    commentItem.querySelector('p').textContent = comment.message;
     commentsFragment.append(commentItem);
   });
   socialComments.innerHTML = '';
