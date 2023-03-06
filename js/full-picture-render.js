@@ -20,7 +20,7 @@ const hideElements = () => {
 };
 
 const addBigPictureData = (photo) => {
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo['url'];
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo.url;
   bigPicture.querySelector('.likes-count').textContent = photo.likes;
   bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photo.description;
