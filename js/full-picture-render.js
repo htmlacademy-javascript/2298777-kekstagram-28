@@ -41,40 +41,6 @@ const getCommentData = (photo) => {
   };
 };
 
-const onCommentButtonClick = (photo, createComments) => {
-  const socialCommentsCount = socialComments.children.length;
-  const numberToShow = photo.comments.length - socialCommentsCount < NUMBER_OF_VISIBLE_COMMENTS ?
-    photo.comments.length - socialCommentsCount : NUMBER_OF_VISIBLE_COMMENTS;
-  createComments(numberToShow);
-  bigPicture.querySelector('.social__comment-count').innerHTML =
-    `${socialComments.children.length} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
-  if (socialComments.children.length === photo.comments.length) {
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
-    commentLoaderButton.removeEventListener('click', () => {
-      onCommentButtonClick(photo, createComments);
-    });
-  }
-};
-
-const addCommentsCount = (photo, createComments) => {
-  if (photo.comments.length <= NUMBER_OF_VISIBLE_COMMENTS) {
-    bigPicture.querySelector('.social__comment-count').innerHTML =
-      `${photo.comments.length} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
-    commentLoaderButton.removeEventListener('click', () => {
-      onCommentButtonClick(photo, createComments);
-    });
-  } else {
-    bigPicture.querySelector('.social__comment-count').innerHTML =
-      `${NUMBER_OF_VISIBLE_COMMENTS} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
-    bigPicture.querySelector('.comments-loader').classList.remove('hidden');
-    commentLoaderButton.addEventListener('click', () => {
-      onCommentButtonClick(photo, createComments);
-    });
-  }
-};
-
-
 const renderBigPicture = (evt, photo) => {
 
   evt.preventDefault();
@@ -84,6 +50,33 @@ const renderBigPicture = (evt, photo) => {
   const createComments = getCommentData(photo);
   createComments(NUMBER_OF_VISIBLE_COMMENTS > photo.comments.length
     ? photo.comments.length : NUMBER_OF_VISIBLE_COMMENTS);
+
+  const onCommentButtonClick = () => {
+    const socialCommentsCount = socialComments.children.length;
+    const numberToShow = photo.comments.length - socialCommentsCount < NUMBER_OF_VISIBLE_COMMENTS ?
+      photo.comments.length - socialCommentsCount : NUMBER_OF_VISIBLE_COMMENTS;
+    createComments(numberToShow);
+    bigPicture.querySelector('.social__comment-count').innerHTML =
+      `${socialComments.children.length} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
+    if (socialComments.children.length === photo.comments.length) {
+      bigPicture.querySelector('.comments-loader').classList.add('hidden');
+      commentLoaderButton.removeEventListener('click', onCommentButtonClick);
+    }
+  };
+
+  const addCommentsCount = () => {
+    if (photo.comments.length <= NUMBER_OF_VISIBLE_COMMENTS) {
+      bigPicture.querySelector('.social__comment-count').innerHTML =
+        `${photo.comments.length} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
+      bigPicture.querySelector('.comments-loader').classList.add('hidden');
+      commentLoaderButton.removeEventListener('click', onCommentButtonClick);
+    } else {
+      bigPicture.querySelector('.social__comment-count').innerHTML =
+        `${NUMBER_OF_VISIBLE_COMMENTS} из <span class="comments-count">${photo.comments.length}</span> комментариев`;
+      bigPicture.querySelector('.comments-loader').classList.remove('hidden');
+      commentLoaderButton.addEventListener('click', onCommentButtonClick);
+    }
+  };
 
   addCommentsCount(photo, createComments);
 
