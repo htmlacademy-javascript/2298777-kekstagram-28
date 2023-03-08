@@ -44,7 +44,7 @@ const renderBigPicture = (evt, photo) => {
   document.body.classList.add('modal-open');
   socialComments.innerHTML = '';
   shownComments = 0;
-  let numberToShow = NUMBER_OF_VISIBLE_COMMENTS > photo.comments.length ?
+  let numberToShow = Math.min(NUMBER_OF_VISIBLE_COMMENTS, photo.comments.length)
     photo.comments.length : NUMBER_OF_VISIBLE_COMMENTS;
   const comments = addCommentsToArray(photo);
 
