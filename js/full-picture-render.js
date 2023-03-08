@@ -26,16 +26,36 @@ const getCommentData = (comments, numberToShow) => {
   socialComments.append(commentsFragment);
 };
 
-const addCommentsToArray = (photo) => {
-  const comments = [];
-  photo.comments.forEach((comment) => {
+const createComments = (photo) => {
+  const comments = photo.comments.map((comment) => {
     const commentItem = commentsTemplate.cloneNode(true);
     commentItem.querySelector('img').src = comment.avatar;
     commentItem.querySelector('img').alt = comment.name;
     commentItem.querySelector('p').textContent = comment.message;
-    comments.push(commentItem);
+    return commentItem;
   });
   return comments;
+};
+
+const hideCommentLoader = (onCommentButtonClick) => {
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+  commentLoaderButton.removeEventListener('click', onCommentButtonClick);
+};
+
+const addCommentLoader = (onCommentButtonClick) => {
+  bigPicture.querySelector('.comments-loader').classList.remove('hidden');
+  commentLoaderButton.addEventListener('click', onCommentButtonClick);
+};
+
+const addCommentsCount = (comments, onCommentButtonClick) => {
+  const commentsCount = comments.length;
+  bigPicture.querySelector('.social__comment-count').innerHTML =
+    `${Math.min(commentsCount, NUMBER_OF_VISIBLE_COMMENTS)} из <span class="comments-count">${comments.length}</span> комментариев`;
+  if (commentsCount <= NUMBER_OF_VISIBLE_COMMENTS) {
+    hideCommentLoader(onCommentButtonClick);
+  } else {
+    addCommentLoader(onCommentButtonClick);
+  }
 };
 
 const renderBigPicture = (evt, photo) => {
@@ -44,39 +64,23 @@ const renderBigPicture = (evt, photo) => {
   document.body.classList.add('modal-open');
   socialComments.innerHTML = '';
   shownComments = 0;
-  let numberToShow = Math.min(NUMBER_OF_VISIBLE_COMMENTS, photo.comments.length)
-    photo.comments.length : NUMBER_OF_VISIBLE_COMMENTS;
-  const comments = addCommentsToArray(photo);
-
-  const hideCommentLoader = () => {
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
-    commentLoaderButton.removeEventListener('click', onCommentButtonClick);
-  };
-
-  const addCommentLoader = () => {
-    bigPicture.querySelector('.comments-loader').classList.remove('hidden');
-    commentLoaderButton.addEventListener('click', onCommentButtonClick);
-  };
-
-  const addCommentsCount = () => {
-    const commentsCount = comments.length;
-    bigPicture.querySelector('.social__comment-count').innerHTML =
-      `${Math.min(commentsCount, NUMBER_OF_VISIBLE_COMMENTS)} из <span class="comments-count">${comments.length}</span> комментариев`;
-    if (commentsCount <= NUMBER_OF_VISIBLE_COMMENTS) {
-      hideCommentLoader();
-    } else {
-      addCommentLoader();
-    }
-  };
+  let numberToShow = Math.min(NUMBER_OF_VISIBLE_COMMENTS, photo.comments.length);
+  const comments = createComments(photo);
 
   function onCommentButtonClick() {
-    numberToShow = comments.length - shownComments < NUMBER_OF_VISIBLE_COMMENTS ?
-      comments.length - shownComments : NUMBER_OF_VISIBLE_COMMENTS;
+    numberToShow = Math.min(NUMBER_OF_VISIBLE_COMMENTS, (comments.length - shownComments));
     getCommentData(comments, numberToShow);
     bigPicture.querySelector('.social__comment-count').innerHTML =
       `${shownComments} из <span class="comments-count">${comments.length}</span> комментариев`;
     if (shownComments === comments.length) {
-      hideCommentLoader();
+      hideCommentLoader(onCommentButtonClick);
+    }
+  }
+
+  function onDocumentKeydown (e) {
+    if (isEscapeKeydown(e)) {
+      evt.preventDefault();
+      closeBigPicture();
     }
   }
 
@@ -87,15 +91,8 @@ const renderBigPicture = (evt, photo) => {
     commentLoaderButton.removeEventListener('click', onCommentButtonClick);
   }
 
-  function onDocumentKeydown (evt) {
-    if (isEscapeKeydown(evt)) {
-      evt.preventDefault();
-      closeBigPicture();
-    }
-  }
-
   getCommentData(comments, numberToShow);
-  addCommentsCount(photo);
+  addCommentsCount(comments, onCommentButtonClick);
   addBigPictureData(photo);
   bigPictureCloseButton.addEventListener('click', closeBigPicture);
   bigPicture.classList.remove('hidden');
