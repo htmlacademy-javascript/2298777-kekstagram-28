@@ -21,6 +21,7 @@ const createUploadForm = () => {
   const hideModal = () => {
     uploadButton.value = '';
     uploadModal.classList.add('hidden');
+    uploadModal.querySelector('.pristine-error').style.display = 'none';
     document.body.classList.remove('modal-open');
     removeEventListenerRest(uploadModal, 'keydown', stopPropagationFunc, ...ESC_RESISTANT_CLASS);
   };
