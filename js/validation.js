@@ -1,6 +1,7 @@
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('input[name="hashtags"]');
 const regex = /^#[a-zа-я0-9]{1,19}$/g;
+const MAX_NUMBER_OF_HASHTAGS = 5;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__text',
@@ -14,7 +15,7 @@ const validateHashtags = () => {
     return true;
   }
   const hashtags = hashtagsText.split(' ');
-  if (hashtags.length > 5 || hashtags.length !== new Set(hashtags).size) {
+  if (hashtags.length > MAX_NUMBER_OF_HASHTAGS || hashtags.length !== new Set(hashtags).size) {
     return false;
   }
   for (const hashtag of hashtags) {
