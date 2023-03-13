@@ -16,9 +16,9 @@ const createCounterHtml = (commentsShown, commentsCount) => {
   const spanItem = document.createElement('span');
   spanItem.classList.add('comments-count');
   spanItem.textContent = commentsCount;
-  comentsCount.append(`${commentsShown} из `);
-  comentsCount.append(spanItem);
-  comentsCount.append(' комментариев');
+  comentsCount.append(`${commentsShown} из `,
+    spanItem,
+    ' комментариев');
 };
 
 const addBigPictureData = (photo) => {

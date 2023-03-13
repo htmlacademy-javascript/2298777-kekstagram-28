@@ -1,6 +1,6 @@
 import './validation.js';
 import './filters-slider.js';
-import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagationFunc} from './functions.js';
+import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './functions.js';
 
 const ESC_RESISTANT_CLASS = ['input[name="hashtags"]', 'textarea[name="description"]'];
 
@@ -8,6 +8,7 @@ const uploadButton = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
 const uploadModalCloseButton = uploadModal.querySelector('#upload-cancel');
 const uploadImgPreview = uploadModal.querySelector('.img-upload__preview').children[0];
+const uploadForm = document.querySelector('.img-upload__form');
 
 const createUploadForm = () => {
   //#region
@@ -15,15 +16,20 @@ const createUploadForm = () => {
     uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
     uploadModal.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    addEventListenerRest(uploadModal, 'keydown', stopPropagationFunc, ...ESC_RESISTANT_CLASS);
+    addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
   };
 
   const hideModal = () => {
     uploadButton.value = '';
-    uploadModal.classList.add('hidden');
-    uploadModal.querySelector('.pristine-error').style.display = 'none';
+    uploadForm.querySelector('input[name="hashtags"]').value = '';
+    uploadForm.querySelector('textarea[name="description"]').value = '';
+    const pristineError = uploadModal.querySelector('.pristine-error');
+    if (pristineError !== null) {
+      pristineError.style.display = 'none';
+    }
     document.body.classList.remove('modal-open');
-    removeEventListenerRest(uploadModal, 'keydown', stopPropagationFunc, ...ESC_RESISTANT_CLASS);
+    removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+    uploadModal.classList.add('hidden');
   };
 
   const closeModal = () => {

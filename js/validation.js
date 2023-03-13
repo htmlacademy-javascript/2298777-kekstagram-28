@@ -1,5 +1,6 @@
 const uploadForm = document.querySelector('.img-upload__form');
-const hashtags = uploadForm.querySelector('input[name="hashtags"]');
+const hashtagInput = uploadForm.querySelector('input[name="hashtags"]');
+const regex = /^#[a-zа-я0-9]{1,19}$/g;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__text',
@@ -8,20 +9,23 @@ const pristine = new Pristine(uploadForm, {
 });
 
 const validateHashtags = () => {
-  let returnValue = true;
-  const hashtagsText = hashtags.value.trim().toLowerCase();
-  const hashtagsArray = hashtagsText.split(' ');
-  for (const hashtag of hashtagsArray) {
-    const regex = /^#[a-zа-я0-9]{1,19}$/g;
-    if (!hashtag.match(regex) || hashtagsArray.filter((e) => e === hashtag).length > 1) {
-      returnValue = false;
-      break;
+  const hashtagsText = hashtagInput.value.trim().toLowerCase();
+  if (hashtagsText === '') {
+    return true;
+  }
+  const hashtags = hashtagsText.split(' ');
+  if (hashtags.length > 5 || hashtags.length !== new Set(hashtags).size) {
+    return false;
+  }
+  for (const hashtag of hashtags) {
+    if (!hashtag.match(regex)) {
+      return false;
     }
   }
-  return returnValue || hashtagsText === '';
+  return true;
 };
 
-pristine.addValidator(hashtags, () => validateHashtags(), 'Не подходящее значение хэштега', 1, false);
+pristine.addValidator(hashtagInput, validateHashtags, 'Не подходящее значение хэштега', 1, false);
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();

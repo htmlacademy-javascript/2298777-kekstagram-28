@@ -63,7 +63,7 @@ const getRandomIdCreator = (min, max) => {
 
 const isEscapeKeydown = (evt) => evt.key === 'Escape';
 
-const stopPropagationFunc = (evt) => evt.stopPropagation();
+const stopPropagation = (evt) => evt.stopPropagation();
 
 const removeEventListenerRest = (parent, type, action, ...selectors) => {
   for (const selector of selectors) {
@@ -79,4 +79,4 @@ const addEventListenerRest = (parent, type, action, ...selectors) => {
 
 export {fillStartString, getNumberFromString, validateStringLength,
   isPalindrome, getRandomIdCreator, getRandomNumber, isEscapeKeydown,
-  stopPropagationFunc, removeEventListenerRest, addEventListenerRest};
+  stopPropagation, removeEventListenerRest, addEventListenerRest};
