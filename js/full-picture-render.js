@@ -9,6 +9,17 @@ const commentsTemplate = document.querySelector('#comments').content.querySelect
 const socialComments = bigPicture.querySelector('.social__comments');
 const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const commentLoaderButton = bigPicture.querySelector('.comments-loader');
+const comentsCount = bigPicture.querySelector('.social__comment-count');
+
+const createCounterHtml = (commentsShown, commentsCount) => {
+  comentsCount.textContent = '';
+  const spanItem = document.createElement('span');
+  spanItem.classList.add('comments-count');
+  spanItem.textContent = commentsCount;
+  comentsCount.append(`${commentsShown} из `,
+    spanItem,
+    ' комментариев');
+};
 
 const addBigPictureData = (photo) => {
   bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo.url;
@@ -49,8 +60,7 @@ const addCommentLoader = (onCommentButtonClick) => {
 
 const addCommentsCount = (comments, onCommentButtonClick) => {
   const commentsCount = comments.length;
-  bigPicture.querySelector('.social__comment-count').innerHTML =
-    `${Math.min(commentsCount, NUMBER_OF_VISIBLE_COMMENTS)} из <span class="comments-count">${comments.length}</span> комментариев`;
+  createCounterHtml(Math.min(commentsCount, NUMBER_OF_VISIBLE_COMMENTS), comments.length);
   if (commentsCount <= NUMBER_OF_VISIBLE_COMMENTS) {
     hideCommentLoader(onCommentButtonClick);
   } else {
@@ -70,8 +80,7 @@ const renderBigPicture = (evt, photo) => {
   function onCommentButtonClick() {
     numberToShow = Math.min(NUMBER_OF_VISIBLE_COMMENTS, (comments.length - shownComments));
     getCommentData(comments, numberToShow);
-    bigPicture.querySelector('.social__comment-count').innerHTML =
-      `${shownComments} из <span class="comments-count">${comments.length}</span> комментариев`;
+    createCounterHtml(shownComments, comments.length);
     if (shownComments === comments.length) {
       hideCommentLoader(onCommentButtonClick);
     }
@@ -79,7 +88,7 @@ const renderBigPicture = (evt, photo) => {
 
   function onDocumentKeydown (e) {
     if (isEscapeKeydown(e)) {
-      evt.preventDefault();
+      e.preventDefault();
       closeBigPicture();
     }
   }
