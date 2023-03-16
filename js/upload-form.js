@@ -1,6 +1,7 @@
 import './validation.js';
-import './filters-slider.js';
+import {addListenersOnEffects, removeListenersOnEffects} from './filter-sliders.js';
 import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './functions.js';
+import {addOnScaleButton, removeOnScaleButton} from './scale-button.js';
 
 const ESC_RESISTANT_CLASS = ['input[name="hashtags"]', 'textarea[name="description"]'];
 
@@ -17,6 +18,8 @@ const createUploadForm = () => {
     uploadModal.classList.remove('hidden');
     document.body.classList.add('modal-open');
     addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+    addOnScaleButton();
+    addListenersOnEffects();
   };
 
   const hideModal = () => {
@@ -30,6 +33,8 @@ const createUploadForm = () => {
     document.body.classList.remove('modal-open');
     removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
     uploadModal.classList.add('hidden');
+    removeOnScaleButton();
+    removeListenersOnEffects();
   };
 
   const closeModal = () => {
