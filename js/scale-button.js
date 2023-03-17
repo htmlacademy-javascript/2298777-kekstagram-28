@@ -1,43 +1,37 @@
 const imageUploadScale = document.querySelector('.img-upload__scale');
-const scaleSmallerButton = imageUploadScale.children[0];
-const scaleInputValue = imageUploadScale.children[1];
-const scaleBiggerButton = imageUploadScale.children[2];
+const scaleSmallerButton = imageUploadScale.querySelector('.scale__control--smaller');
+const scaleInputValue = imageUploadScale.querySelector('.scale__control--value');
+const scaleBiggerButton = imageUploadScale.querySelector('.scale__control--bigger');
 const imgUploadPreview = document.querySelector('.img-upload__preview').querySelector('img');
 const DEFAULT_SCALE_VALUE = 100;
+const SCALE_STEP = 25;
 let scaleValue = DEFAULT_SCALE_VALUE;
 
 const increaseScale = () => {
-  if ((scaleValue + DEFAULT_SCALE_VALUE / 100 * 25) <= DEFAULT_SCALE_VALUE) {
-    scaleValue += DEFAULT_SCALE_VALUE / 100 * 25;
+  if ((scaleValue + SCALE_STEP) <= DEFAULT_SCALE_VALUE) {
+    scaleValue += SCALE_STEP;
     scaleInputValue.value = `${scaleValue}%`;
-    imgUploadPreview.style.transform = `scale(${scaleValue / 100})`;
+    imgUploadPreview.style.transform = `scale(${scaleValue / DEFAULT_SCALE_VALUE})`;
   }
 };
 
 const dectreaseScale = () => {
-  if ((scaleValue - DEFAULT_SCALE_VALUE / 100 * 25) > 0) {
-    scaleValue -= DEFAULT_SCALE_VALUE / 100 * 25;
+  if ((scaleValue - SCALE_STEP) > 0) {
+    scaleValue -= SCALE_STEP;
     scaleInputValue.value = `${scaleValue}%`;
-    imgUploadPreview.style.transform = `scale(${scaleValue / 100})`;
+    imgUploadPreview.style.transform = `scale(${scaleValue / DEFAULT_SCALE_VALUE})`;
   }
 };
 
 const addOnScaleButton = () => {
-  imgUploadPreview.style.transform = `scale(${scaleValue / 100})`;
-  scaleValue = DEFAULT_SCALE_VALUE;
-  scaleInputValue.value = `${scaleValue}%`;
-
   scaleBiggerButton.addEventListener('click', increaseScale);
   scaleSmallerButton.addEventListener('click', dectreaseScale);
 };
 
-const removeOnScaleButton = () => {
-  imgUploadPreview.style.transform = `scale(${scaleValue / 100})`;
+const resetScale = () => {
   scaleValue = DEFAULT_SCALE_VALUE;
-  scaleInputValue.value = `${scaleValue}%`;
-
-  scaleBiggerButton.removeEventListener('click', increaseScale);
-  scaleSmallerButton.removeEventListener('click', dectreaseScale);
+  imgUploadPreview.style.transform = `scale(${scaleValue / DEFAULT_SCALE_VALUE})`;
+  scaleInputValue.value = `${DEFAULT_SCALE_VALUE}%`;
 };
 
-export {addOnScaleButton, removeOnScaleButton};
+export {addOnScaleButton, resetScale};
