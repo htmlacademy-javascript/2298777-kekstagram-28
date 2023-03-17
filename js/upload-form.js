@@ -1,5 +1,5 @@
 import './validation.js';
-import {addListenersOnEffects, removeListenersOnEffects} from './filter-sliders.js';
+import {addListenersOnEffects, resetEffects} from './filter-sliders.js';
 import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './functions.js';
 import {addOnScaleButton, resetScale} from './scale-button.js';
 
@@ -18,8 +18,8 @@ const createUploadForm = () => {
     uploadModal.classList.remove('hidden');
     document.body.classList.add('modal-open');
     addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
-    addListenersOnEffects();
     resetScale();
+    resetEffects();
   };
 
   const hideModal = () => {
@@ -33,7 +33,6 @@ const createUploadForm = () => {
     document.body.classList.remove('modal-open');
     removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
     uploadModal.classList.add('hidden');
-    removeListenersOnEffects();
   };
 
   const closeModal = () => {
@@ -59,6 +58,7 @@ const createUploadForm = () => {
 
   uploadButton.addEventListener('change', () => {
     addOnScaleButton();
+    addListenersOnEffects();
   }, {once: true});
 };
 

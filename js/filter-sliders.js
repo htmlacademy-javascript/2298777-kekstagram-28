@@ -24,27 +24,32 @@ const options = {
   chrome: {
     min: 0,
     max: 1,
-    step: 0.1
+    step: 0.1,
+    selector: 'effects__preview--chrome'
   },
   sepia: {
     min: 0,
     max: 1,
-    step: 0.1
+    step: 0.1,
+    selector: 'effects__preview--sepia'
   },
   marvin: {
     min: 0,
     max: 100,
-    step: 1
+    step: 1,
+    selector: 'effects__preview--marvin'
   },
   phobos: {
     min: 0,
     max: 3,
-    step: 0.1
+    step: 0.1,
+    selector: 'effects__preview--phobos'
   },
   heat: {
     min: 1,
     max: 3,
-    step: 0.1
+    step: 0.1,
+    selector: 'effects__preview--heat'
   }
 };
 
@@ -66,7 +71,6 @@ const updateEffectSlider = (isOriginalPhoto, minSlider, maxSlider, step, effectC
       effectLevelSlider.classList.add('hidden');
     }
   } else {
-    imgUploadPreview.style.filter = '';
     deleteHiddenClass();
     effectLevelSlider.noUiSlider.updateOptions({
       start: maxSlider,
@@ -86,19 +90,19 @@ const sliderSettings = [
     updateEffectSlider(true);
   },
   () => {
-    updateEffectSlider(false, options.chrome.min, options.chrome.max, options.chrome.step, 'effects__preview--chrome');
+    updateEffectSlider(false, options.chrome.min, options.chrome.max, options.chrome.step, options.chrome.selector);
   },
   () => {
-    updateEffectSlider(false, options.sepia.min, options.sepia.max, options.sepia.step, 'effects__preview--sepia');
+    updateEffectSlider(false, options.sepia.min, options.sepia.max, options.sepia.step, options.sepia.selector);
   },
   () => {
-    updateEffectSlider(false, options.marvin.min, options.marvin.max, options.marvin.step, 'effects__preview--marvin');
+    updateEffectSlider(false, options.marvin.min, options.marvin.max, options.marvin.step, options.marvin.selector);
   },
   () => {
-    updateEffectSlider(false, options.phobos.min, options.phobos.max, options.phobos.step, 'effects__preview--phobos');
+    updateEffectSlider(false, options.phobos.min, options.phobos.max, options.phobos.step, options.phobos.selector);
   },
   () => {
-    updateEffectSlider(false, options.heat.min, options.heat.max, options.heat.step, 'effects__preview--heat');
+    updateEffectSlider(false, options.heat.min, options.heat.max, options.heat.step, options.heat.selector);
   }
 ];
 
@@ -119,11 +123,11 @@ const addListenersOnEffects = () => {
   }
 };
 
-const removeListenersOnEffects = () => {
-  for (let i = 0; i < 6; i++) {
-    effectsList.children[i].removeEventListener('click', sliderSettings[i]);
-  }
-  effectLevelSlider.noUiSlider.destroy();
+const resetEffects = () => {
+  imgUploadPreview.className = '';
+  imgUploadPreview.style.filter = '';
+  effectLevelSlider.classList.add('hidden');
+  effectLevelField.classList.add('hidden');
 };
 
-export {addListenersOnEffects, removeListenersOnEffects};
+export {addListenersOnEffects, resetEffects};
