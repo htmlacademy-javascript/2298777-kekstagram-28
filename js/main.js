@@ -3,5 +3,3 @@ import {createUploadForm} from './upload-form.js';
 
 createUploadForm();
 renderPictures();
-
-
