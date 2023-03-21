@@ -1,3 +1,5 @@
+import {postData} from './server-api.js';
+
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('input[name="hashtags"]');
 const regex = /^#[a-zа-я0-9]{1,19}$/g;
@@ -30,8 +32,9 @@ pristine.addValidator(hashtagInput, validateHashtags, 'Не подходящее
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
+
   const isValid = pristine.validate();
   if (isValid) {
-    uploadForm.submit();
+    postData(new FormData(evt.target));
   }
 });
