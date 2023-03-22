@@ -113,7 +113,8 @@ const addListenersOnEffects = () => {
       'min': 0,
       'max': 1
     },
-    step: 0.1
+    step: 0.1,
+    connect: 'lower'
   });
   effectLevelSlider.classList.add('hidden');
   effectLevelField.classList.add('hidden');
@@ -124,6 +125,7 @@ const addListenersOnEffects = () => {
 };
 
 const resetEffects = () => {
+  effectsList.querySelector('#effect-none').checked = true;
   imgUploadPreview.className = '';
   imgUploadPreview.style.filter = '';
   effectLevelSlider.classList.add('hidden');

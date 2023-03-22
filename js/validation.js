@@ -1,4 +1,6 @@
+import {showPostErrorMessage, showPostSuccesMessage} from './messages.js';
 import {postData} from './server-api.js';
+import {closeModal, errorCloseModal, showModal} from './upload-form.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('input[name="hashtags"]');
@@ -35,6 +37,19 @@ uploadForm.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
   if (isValid) {
-    postData(new FormData(evt.target));
+    postData(new FormData(evt.target))
+      .then(() => {
+        closeModal();
+        showPostSuccesMessage();
+      })
+      .catch(() => {
+        errorCloseModal();
+        showPostErrorMessage();
+        document.querySelector('#upload-file').addEventListener('click', (e) => {
+          e.preventDefault();
+          showModal();
+        },
+        {once: true});
+      });
   }
 });

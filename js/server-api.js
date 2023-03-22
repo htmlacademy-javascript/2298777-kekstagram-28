@@ -25,10 +25,6 @@ const getData = (url = DEFAULT_URL.get) =>
 const postData = (body = '',url = DEFAULT_URL.post) =>
   fetch(url, {
     method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
     body: body
   })
     .then((response) => {
