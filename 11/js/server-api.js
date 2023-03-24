@@ -25,7 +25,7 @@ const getData = (url = DEFAULT_URL.get) =>
 const postData = (body = '',url = DEFAULT_URL.post) =>
   fetch(url, {
     method: 'POST',
-    body: body
+    body,
   })
     .then((response) => {
       if (response.ok) {
