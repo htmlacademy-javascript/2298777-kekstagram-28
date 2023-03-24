@@ -1,6 +1,6 @@
 const DEFAULT_URL = {
   get: 'https://28.javascript.pages.academy/kekstagram/data',
-  post: 'https://28.javascript.pages.academy/kekstagra'
+  post: 'https://28.javascript.pages.academy/kekstagram'
 };
 
 const ERROR_MESSAGES = {
