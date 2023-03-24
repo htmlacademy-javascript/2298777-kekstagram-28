@@ -1,22 +1,24 @@
-import {isEscapeKeydown, stopPropagation} from './functions.js';
+import {addStyleToElement, isEscapeKeydown, stopPropagation} from './functions.js';
 
 const postSuccesTemplate = document.querySelector('#success').content.querySelector('.success');
 const postErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+const renderErrorStyle = {
+  'z-index': '100',
+  'position': 'absolute',
+  'left': '0',
+  'top': '0',
+  'right': '0',
+  'padding': '10px 3px',
+  'font-size': '30px',
+  'text-align': 'center',
+  'background-color': 'red',
+};
 
 
 const showRenderErrorMessage = () => {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '0';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+  addStyleToElement(alertContainer, renderErrorStyle);
   alertContainer.textContent = 'Ошибка загрузки данных. Попробуйте перезагрузить страницу.';
-
   document.body.append(alertContainer);
 };
 
@@ -42,7 +44,7 @@ const addOnCloseListeners = (message, messageButton, messageSelector) => {
   document.body.appendChild(message);
 };
 
-const showPostSuccesMessage = () => {
+const showPostSuccessMessage = () => {
 
   const successMessage = postSuccesTemplate.cloneNode(true);
   const successButton = successMessage.querySelector('.success__button');
@@ -60,4 +62,4 @@ const showPostErrorMessage = () => {
   addOnCloseListeners(errorMessage, errorButton, errorSelector);
 };
 
-export {showRenderErrorMessage, showPostSuccesMessage, showPostErrorMessage};
+export {showRenderErrorMessage, showPostSuccessMessage, showPostErrorMessage};

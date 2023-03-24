@@ -1,6 +1,6 @@
 const DEFAULT_URL = {
   get: 'https://28.javascript.pages.academy/kekstagram/data',
-  post: 'https://28.javascript.pages.academy/kekstagram'
+  post: 'https://28.javascript.pages.academy/kekstagra'
 };
 
 const ERROR_MESSAGES = {
@@ -25,7 +25,7 @@ const getData = (url = DEFAULT_URL.get) =>
 const postData = (body = '',url = DEFAULT_URL.post) =>
   fetch(url, {
     method: 'POST',
-    body: body
+    body,
   })
     .then((response) => {
       if (response.ok) {

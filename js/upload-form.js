@@ -11,28 +11,21 @@ const uploadModalCloseButton = uploadModal.querySelector('#upload-cancel');
 const uploadImgPreview = uploadModal.querySelector('.img-upload__preview').children[0];
 const uploadForm = document.querySelector('.img-upload__form');
 
-const hideModal = () => {
-  resetScale();
-  resetEffects();
-  uploadButton.value = '';
-  uploadForm.querySelector('input[name="hashtags"]').value = '';
-  uploadForm.querySelector('textarea[name="description"]').value = '';
-  const pristineError = uploadModal.querySelector('.pristine-error');
-  if (pristineError !== null) {
-    pristineError.style.display = 'none';
+const closeModal = (isErrorOccurred = false) => () => {
+  if (!isErrorOccurred) {
+    resetScale();
+    resetEffects();
+    uploadImgPreview.src = '';
+    uploadButton.value = '';
+    uploadForm.querySelector('input[name="hashtags"]').value = '';
+    uploadForm.querySelector('textarea[name="description"]').value = '';
+    const pristineError = uploadModal.querySelector('.pristine-error');
+    if (pristineError !== null) {
+      pristineError.style.display = 'none';
+    }
+    removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
-  document.body.classList.remove('modal-open');
-  removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
-  uploadModal.classList.add('hidden');
-};
-
-const closeModal = () => {
-  hideModal();
-  uploadModalCloseButton.removeEventListener('click', closeModal);
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
-
-const errorCloseModal = () => {
   document.body.classList.remove('modal-open');
   uploadModal.classList.add('hidden');
 };
@@ -40,11 +33,14 @@ const errorCloseModal = () => {
 function onDocumentKeydown (evt) {
   if (isEscapeKeydown(evt)) {
     evt.preventDefault();
-    closeModal();
+    closeModal()();
   }
 }
 
-const showModal = () => {
+const showModal = (e) => {
+  if (uploadImgPreview.getAttribute('src') !== '') {
+    e.preventDefault();
+  }
   uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -53,19 +49,24 @@ const showModal = () => {
 
 const createUploadForm = () => {
 
-  uploadButton.addEventListener('change', () => {
+  uploadImgPreview.src = '';
+  addOnScaleButton();
+  addListenersOnEffects();
+  uploadModalCloseButton.addEventListener('click', closeModal());
+
+  uploadButton.addEventListener('click', (e) => {
     uploadForm.querySelector('input[name="scale"]').value = '100%';
-    showModal();
-
-    uploadModalCloseButton.addEventListener('click', closeModal);
+    const waitForUpload = () => {
+      if (uploadButton.value !== '') {
+        showModal(e);
+      } else {
+        setTimeout(waitForUpload, 16);
+      }
+    };
+    waitForUpload();
     document.addEventListener('keydown', onDocumentKeydown);
-
   });
 
-  uploadButton.addEventListener('change', () => {
-    addOnScaleButton();
-    addListenersOnEffects();
-  }, {once: true});
 };
 
-export {createUploadForm, closeModal, errorCloseModal, showModal};
+export {createUploadForm, closeModal, showModal};
