@@ -11,7 +11,7 @@ const uploadModalCloseButton = uploadModal.querySelector('#upload-cancel');
 const uploadImgPreview = uploadModal.querySelector('.img-upload__preview').children[0];
 const uploadForm = document.querySelector('.img-upload__form');
 
-const closeModal = (isErrorOccurred = false) => () => {
+const closeModal = (isErrorOccurred = false) => {
   if (!isErrorOccurred) {
     resetScale();
     resetEffects();
@@ -33,7 +33,7 @@ const closeModal = (isErrorOccurred = false) => () => {
 function onDocumentKeydown (evt) {
   if (isEscapeKeydown(evt)) {
     evt.preventDefault();
-    closeModal()();
+    closeModal();
   }
 }
 
@@ -42,6 +42,7 @@ const showModal = () => {
   uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
   addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
 };
 
@@ -50,21 +51,20 @@ const createUploadForm = () => {
   uploadImgPreview.src = '';
   addOnScaleButton();
   addListenersOnEffects();
-  uploadModalCloseButton.addEventListener('click', closeModal());
+
+  uploadModalCloseButton.addEventListener('click', () => {
+    closeModal();
+  });
 
   uploadButton.addEventListener('click', (e) => {
     if (uploadImgPreview.getAttribute('src') !== '') {
       e.preventDefault();
+      showModal();
     }
-    const waitForUpload = () => {
-      if (uploadButton.value !== '' && uploadButton.value !== 'undefined') {
-        showModal();
-      } else {
-        setTimeout(waitForUpload, 16);
-      }
-    };
-    waitForUpload();
-    document.addEventListener('keydown', onDocumentKeydown);
+  });
+
+  uploadButton.addEventListener('change', () => {
+    showModal();
   });
 
 };

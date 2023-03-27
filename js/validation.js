@@ -41,11 +41,11 @@ uploadForm.addEventListener('submit', (evt) => {
     submitButton.disabled = true;
     postData(new FormData(evt.target))
       .then(() => {
-        closeModal()();
+        closeModal();
         showPostSuccessMessage();
       })
       .catch(() => {
-        closeModal(true)();
+        closeModal(true);
         showPostErrorMessage();
       })
       .finally(() => {
