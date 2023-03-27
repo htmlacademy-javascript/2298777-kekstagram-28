@@ -3,6 +3,7 @@ const effectLevelInput = effectLevelField.children[0];
 const effectLevelSlider = effectLevelField.children[1];
 const effectsList = document.querySelector('.effects__list');
 const imgUploadPreview = document.querySelector('.img-upload__preview').children[0];
+const originalEffect = effectsList.querySelector('#effect-none');
 
 const deleteHiddenClass = () => {
   if (effectLevelSlider.classList.contains('hidden')) {
@@ -113,7 +114,8 @@ const addListenersOnEffects = () => {
       'min': 0,
       'max': 1
     },
-    step: 0.1
+    step: 0.1,
+    connect: 'lower'
   });
   effectLevelSlider.classList.add('hidden');
   effectLevelField.classList.add('hidden');
@@ -124,6 +126,7 @@ const addListenersOnEffects = () => {
 };
 
 const resetEffects = () => {
+  originalEffect.checked = true;
   imgUploadPreview.className = '';
   imgUploadPreview.style.filter = '';
   effectLevelSlider.classList.add('hidden');

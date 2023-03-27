@@ -1,12 +1,12 @@
-import {createPhotosWithDescriptions} from './data.js';
 import {renderBigPicture} from './full-picture-render.js';
+import {getData} from './server-api.js';
+import {showRenderErrorMessage} from './messages.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
-const photosWithDescriptions = createPhotosWithDescriptions();
 const picturesContainerFragment = document.createDocumentFragment();
 
-const renderPictures = () => {
+const renderMiniatures = (photosWithDescriptions) => {
   photosWithDescriptions.forEach((photo) => {
     const pictureContainerItem = pictureTemplate.cloneNode(true);
 
@@ -22,6 +22,14 @@ const renderPictures = () => {
   });
 
   pictureContainer.append(picturesContainerFragment);
+};
+
+const renderPictures = () => {
+  getData()
+    .then((photosWithDescriptions) => renderMiniatures(photosWithDescriptions))
+    .catch(() => {
+      showRenderErrorMessage();
+    });
 };
 
 export {renderPictures};

@@ -1,4 +1,9 @@
+import {showPostErrorMessage, showPostSuccessMessage} from './messages.js';
+import {postData} from './server-api.js';
+import {closeModal} from './upload-form.js';
+
 const uploadForm = document.querySelector('.img-upload__form');
+const submitButton = uploadForm.querySelector('#upload-submit');
 const hashtagInput = uploadForm.querySelector('input[name="hashtags"]');
 const regex = /^#[a-zа-я0-9]{1,19}$/g;
 const MAX_NUMBER_OF_HASHTAGS = 5;
@@ -30,8 +35,21 @@ pristine.addValidator(hashtagInput, validateHashtags, 'Не подходящее
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
+
   const isValid = pristine.validate();
   if (isValid) {
-    uploadForm.submit();
+    submitButton.disabled = true;
+    postData(new FormData(evt.target))
+      .then(() => {
+        closeModal();
+        showPostSuccessMessage();
+      })
+      .catch(() => {
+        closeModal(true);
+        showPostErrorMessage();
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+      });
   }
 });

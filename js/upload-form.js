@@ -11,18 +11,11 @@ const uploadModalCloseButton = uploadModal.querySelector('#upload-cancel');
 const uploadImgPreview = uploadModal.querySelector('.img-upload__preview').children[0];
 const uploadForm = document.querySelector('.img-upload__form');
 
-const createUploadForm = () => {
-  //#region
-  const showModal = () => {
-    uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
-    uploadModal.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-    addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+const closeModal = (isErrorOccurred = false) => {
+  if (!isErrorOccurred) {
     resetScale();
     resetEffects();
-  };
-
-  const hideModal = () => {
+    uploadImgPreview.src = '';
     uploadButton.value = '';
     uploadForm.querySelector('input[name="hashtags"]').value = '';
     uploadForm.querySelector('textarea[name="description"]').value = '';
@@ -30,36 +23,50 @@ const createUploadForm = () => {
     if (pristineError !== null) {
       pristineError.style.display = 'none';
     }
-    document.body.classList.remove('modal-open');
     removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
-    uploadModal.classList.add('hidden');
-  };
-
-  const closeModal = () => {
-    hideModal();
-    uploadModalCloseButton.removeEventListener('click', closeModal);
-    document.removeEventListener('keydown', onDocumentKeydown);
-  };
-
-  function onDocumentKeydown (evt) {
-    if (isEscapeKeydown(evt)) {
-      evt.preventDefault();
-      closeModal();
-    }
   }
-  //#endregion
-  uploadButton.addEventListener('change', () => {
-    showModal();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.classList.remove('modal-open');
+  uploadModal.classList.add('hidden');
+};
 
-    uploadModalCloseButton.addEventListener('click', closeModal);
-    document.addEventListener('keydown', onDocumentKeydown);
+function onDocumentKeydown (evt) {
+  if (isEscapeKeydown(evt)) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
 
+const showModal = () => {
+  uploadForm.querySelector('input[name="scale"]').value = '100%';
+  uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
+  uploadModal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
+  addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
+};
+
+const createUploadForm = () => {
+
+  uploadImgPreview.src = '';
+  addOnScaleButton();
+  addListenersOnEffects();
+
+  uploadModalCloseButton.addEventListener('click', () => {
+    closeModal();
+  });
+
+  uploadButton.addEventListener('click', (e) => {
+    if (uploadImgPreview.getAttribute('src') !== '') {
+      e.preventDefault();
+      showModal();
+    }
   });
 
   uploadButton.addEventListener('change', () => {
-    addOnScaleButton();
-    addListenersOnEffects();
-  }, {once: true});
+    showModal();
+  });
+
 };
 
-export {createUploadForm};
+export {createUploadForm, closeModal, showModal};
