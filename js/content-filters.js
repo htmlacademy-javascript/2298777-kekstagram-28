@@ -1,4 +1,3 @@
-import {renderMiniatures} from './render.js';
 import {debounce} from './functions.js';
 
 const FiltersId = {
@@ -34,9 +33,9 @@ const addActiveFilterClass = (id) => {
   filterForm.querySelector(id).classList.add(ACTIVE_SELECTOR);
 };
 
-const createFilteredMiniatures = (photosWithDescriptions, id, sortCb = false, numberToShow = DEFFAULT_SHOWN_MINIATURES) => {
+const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, id, sortCb = false, numberToShow = DEFFAULT_SHOWN_MINIATURES) => {
   if (!checkActiveFilter(id)) {
-    clearMiniatures();
+    clearMiniaturesDebounced();
     if (sortCb) {
       renderMiniatures(photosWithDescriptions.slice().sort(sortCb).slice(0, numberToShow));
     } else {
@@ -47,35 +46,32 @@ const createFilteredMiniatures = (photosWithDescriptions, id, sortCb = false, nu
 };
 
 const setFilterListeners = [
-  (photosWithDescriptions) =>
-    debounce(() => {
-      createFilteredMiniatures(photosWithDescriptions, FiltersId.DEFFAULT);
-    })
-  ,
-  (photosWithDescriptions) =>
-    debounce(() => {
-      createFilteredMiniatures(photosWithDescriptions, FiltersId.RANDOM, () => Math.random() - 0.5, 10);
-    })
-  ,
-  (photosWithDescriptions) =>
-    debounce(() => {
-      createFilteredMiniatures(photosWithDescriptions, FiltersId.DISCUSSED, (a, b) => {
-        if (a.comments.length > b.comments.length) {
-          return -1;
-        }
-        if (a.comments.length < b.comments.length) {
-          return 1;
-        }
-        return 0;
-      });
-    })
+  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DEFFAULT);
+  },
+  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.RANDOM, () => Math.random() - 0.5, 10);
+  },
+  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DISCUSSED, (a, b) => {
+      if (a.comments.length > b.comments.length) {
+        return -1;
+      }
+      if (a.comments.length < b.comments.length) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 ];
 
-const showFilter = (photosWithDescriptions) => {
+const showFilter = (photosWithDescriptions, renderMiniatures) => {
   filterContainer.classList.remove('img-filters--inactive');
-
+  const clearMiniatureDebounced = debounce(clearMiniatures);
   for (let i = 0; i < filterForm.children.length; i++) {
-    filterForm.children[i].addEventListener('click', setFilterListeners[i](photosWithDescriptions));
+    filterForm.children[i].addEventListener('click',
+      setFilterListeners[i](photosWithDescriptions , renderMiniatures, clearMiniatureDebounced)
+    );
   }
 };
 
