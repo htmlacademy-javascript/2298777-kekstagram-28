@@ -3,17 +3,6 @@ const getRandomNumber = (min, max) => {
   return Math.floor(result);
 };
 
-const getRandomIdCreator = (min, max) => {
-  const ids = Array.from({length: max - min + 1}, (_, i) => min + i);
-
-  return function () {
-    const randomIndex = getRandomNumber(0, ids.length - 1);
-    const resultId = ids[randomIndex];
-    ids.splice(randomIndex, 1);
-    return resultId;
-  };
-};
-
 const isEscapeKeydown = (evt) => evt.key === 'Escape';
 
 const stopPropagation = (evt) => evt.stopPropagation();
@@ -36,6 +25,14 @@ const addStyleToElement = (element, stylePropepries) => {
   }
 };
 
-export {getRandomIdCreator, getRandomNumber, isEscapeKeydown,
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomNumber, isEscapeKeydown,
   stopPropagation, removeEventListenerRest, addEventListenerRest,
-  addStyleToElement};
+  addStyleToElement, debounce};

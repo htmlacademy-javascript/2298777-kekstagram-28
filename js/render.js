@@ -1,6 +1,7 @@
 import {renderBigPicture} from './full-picture-render.js';
 import {getData} from './server-api.js';
 import {showRenderErrorMessage} from './messages.js';
+import {showFilter} from './content-filters.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
@@ -26,10 +27,13 @@ const renderMiniatures = (photosWithDescriptions) => {
 
 const renderPictures = () => {
   getData()
-    .then((photosWithDescriptions) => renderMiniatures(photosWithDescriptions))
+    .then((photosWithDescriptions) => {
+      renderMiniatures(photosWithDescriptions);
+      showFilter(photosWithDescriptions);
+    })
     .catch(() => {
       showRenderErrorMessage();
     });
 };
 
-export {renderPictures};
+export {renderPictures, renderMiniatures};
