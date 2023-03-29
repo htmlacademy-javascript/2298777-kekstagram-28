@@ -20,7 +20,6 @@ const EffectsName = {
 };
 
 let photos = [];
-const pictureContainer = document.querySelector('.pictures');
 
 const initUserPicture = (photosWithDescriptions) => {
   photos = photosWithDescriptions;
@@ -39,8 +38,6 @@ const addUserPicture = (pictureData) => {
   photos.push(picture);
   clearMiniatures();
   renderMiniatures(photos);
-  pictureContainer.lastChild.querySelector('.picture__img').style.scale = picture.scale;
-  pictureContainer.lastChild.querySelector('.picture__img').style.filter = picture.effect;
 };
 
 export {addUserPicture, initUserPicture};
