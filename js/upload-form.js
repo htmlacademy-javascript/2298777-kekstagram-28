@@ -39,7 +39,7 @@ function onDocumentKeydown (evt) {
 
 const showModal = () => {
   uploadForm.querySelector('input[name="scale"]').value = '100%';
-  uploadImgPreview.src = `photos/${uploadButton.value.split('\\')[2]}`;
+  uploadImgPreview.src = URL.createObjectURL(uploadButton.files[0]);
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);

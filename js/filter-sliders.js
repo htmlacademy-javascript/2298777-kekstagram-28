@@ -13,7 +13,7 @@ const deleteHiddenClass = () => {
   imgUploadPreview.className = '';
 };
 
-const effectName = {
+const EffectsName = {
   'effects__preview--chrome': ['grayscale', ''],
   'effects__preview--sepia': ['sepia', ''],
   'effects__preview--marvin': ['invert', '%'],
@@ -21,32 +21,32 @@ const effectName = {
   'effects__preview--heat': ['brightness', '']
 };
 
-const options = {
-  chrome: {
+const Options = {
+  CHROME: {
     min: 0,
     max: 1,
     step: 0.1,
     selector: 'effects__preview--chrome'
   },
-  sepia: {
+  SEPIA: {
     min: 0,
     max: 1,
     step: 0.1,
     selector: 'effects__preview--sepia'
   },
-  marvin: {
+  MARVIN: {
     min: 0,
     max: 100,
     step: 1,
     selector: 'effects__preview--marvin'
   },
-  phobos: {
+  PHOBOS: {
     min: 0,
     max: 3,
     step: 0.1,
     selector: 'effects__preview--phobos'
   },
-  heat: {
+  HEAT: {
     min: 1,
     max: 3,
     step: 0.1,
@@ -57,7 +57,7 @@ const options = {
 const onSliderUpdate = () => {
   effectLevelInput.value = effectLevelSlider.noUiSlider.get();
   if (imgUploadPreview.className) {
-    const effectOptions = effectName[imgUploadPreview.className];
+    const effectOptions = EffectsName[imgUploadPreview.className];
     imgUploadPreview.style.filter =
       `${effectOptions[0]}(${effectLevelInput.value}${effectOptions[1]})`;
   }
@@ -91,19 +91,19 @@ const sliderSettings = [
     updateEffectSlider(true);
   },
   () => {
-    updateEffectSlider(false, options.chrome.min, options.chrome.max, options.chrome.step, options.chrome.selector);
+    updateEffectSlider(false, Options.CHROME.min, Options.CHROME.max, Options.CHROME.step, Options.CHROME.selector);
   },
   () => {
-    updateEffectSlider(false, options.sepia.min, options.sepia.max, options.sepia.step, options.sepia.selector);
+    updateEffectSlider(false, Options.SEPIA.min, Options.SEPIA.max, Options.SEPIA.step, Options.SEPIA.selector);
   },
   () => {
-    updateEffectSlider(false, options.marvin.min, options.marvin.max, options.marvin.step, options.marvin.selector);
+    updateEffectSlider(false, Options.MARVIN.min, Options.MARVIN.max, Options.MARVIN.step, Options.MARVIN.selector);
   },
   () => {
-    updateEffectSlider(false, options.phobos.min, options.phobos.max, options.phobos.step, options.phobos.selector);
+    updateEffectSlider(false, Options.PHOBOS.min, Options.PHOBOS.max, Options.PHOBOS.step, Options.PHOBOS.selector);
   },
   () => {
-    updateEffectSlider(false, options.heat.min, options.heat.max, options.heat.step, options.heat.selector);
+    updateEffectSlider(false, Options.HEAT.min, Options.HEAT.max, Options.HEAT.step, Options.HEAT.selector);
   }
 ];
 
