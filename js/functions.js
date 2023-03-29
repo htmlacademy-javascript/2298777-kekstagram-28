@@ -33,6 +33,10 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
+const compareRandomCb = () => Math.random() - 0.5;
+
+const compareCommentsLengthCb = (a, b) => b.comments.length - a.comments.length;
+
 export {getRandomNumber, isEscapeKeydown,
   stopPropagation, removeEventListenerRest, addEventListenerRest,
-  addStyleToElement, debounce};
+  addStyleToElement, debounce, compareRandomCb, compareCommentsLengthCb};

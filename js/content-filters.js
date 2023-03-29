@@ -1,13 +1,14 @@
-import {debounce} from './functions.js';
+import {debounce, compareRandomCb, compareCommentsLengthCb} from './functions.js';
 
 const FiltersId = {
-  DEFFAULT: '#filter-default',
+  DEFAULT: '#filter-default',
   RANDOM : '#filter-random',
   DISCUSSED: '#filter-discussed'
 };
 const FILTERS_COUNT = 3;
-const DEFFAULT_SHOWN_MINIATURES = 25;
+const DEFAULT_MINIATURES_COUNT = 25;
 const ACTIVE_SELECTOR = 'img-filters__button--active';
+const RANDOM_MINIATURES_COUNT = 10;
 
 const filterContainer = document.querySelector('.img-filters');
 const filterForm = filterContainer.querySelector('.img-filters__form');
@@ -16,7 +17,7 @@ const picturesContainer = document.querySelector('.pictures');
 const clearMiniatures = () => {
   const pictures = picturesContainer.querySelectorAll('.picture');
   for (let i = 0; i < pictures.length; i++) {
-    pictures[i].parentNode.removeChild(pictures[i]);
+    pictures[i].remove();
   }
 };
 
@@ -33,10 +34,10 @@ const addActiveFilterClass = (id) => {
   filterForm.querySelector(id).classList.add(ACTIVE_SELECTOR);
 };
 
-const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, id, sortCb = false, numberToShow = DEFFAULT_SHOWN_MINIATURES) => {
+const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, id, sortCb, numberToShow = DEFAULT_MINIATURES_COUNT) => {
   if (!checkActiveFilter(id)) {
     clearMiniaturesDebounced();
-    if (sortCb) {
+    if (typeof sortCb === 'function') {
       renderMiniatures(photosWithDescriptions.slice().sort(sortCb).slice(0, numberToShow));
     } else {
       renderMiniatures(photosWithDescriptions);
@@ -45,32 +46,24 @@ const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clea
   }
 };
 
-const setFilterListeners = [
-  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DEFFAULT);
+const setFilterListeners = {
+  [FiltersId.DEFAULT]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DEFAULT);
   },
-  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.RANDOM, () => Math.random() - 0.5, 10);
+  [FiltersId.RANDOM]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.RANDOM, compareRandomCb, RANDOM_MINIATURES_COUNT);
   },
-  (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DISCUSSED, (a, b) => {
-      if (a.comments.length > b.comments.length) {
-        return -1;
-      }
-      if (a.comments.length < b.comments.length) {
-        return 1;
-      }
-      return 0;
-    });
+  [FiltersId.DISCUSSED]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
+    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DISCUSSED, compareCommentsLengthCb);
   }
-];
+};
 
 const showFilter = (photosWithDescriptions, renderMiniatures) => {
   filterContainer.classList.remove('img-filters--inactive');
   const clearMiniatureDebounced = debounce(clearMiniatures);
-  for (let i = 0; i < filterForm.children.length; i++) {
-    filterForm.children[i].addEventListener('click',
-      setFilterListeners[i](photosWithDescriptions , renderMiniatures, clearMiniatureDebounced)
+  for (const key in FiltersId) {
+    filterForm.querySelector(FiltersId[key]).addEventListener('click',
+      setFilterListeners[FiltersId[key]](photosWithDescriptions , renderMiniatures, clearMiniatureDebounced)
     );
   }
 };
