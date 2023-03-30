@@ -1,7 +1,6 @@
 import {showPostErrorMessage, showPostSuccessMessage} from './messages.js';
 import {postData} from './server-api.js';
 import {closeModal} from './upload-form.js';
-import {addUserPicture} from './user-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const submitButton = uploadForm.querySelector('#upload-submit');
@@ -41,9 +40,8 @@ uploadForm.addEventListener('submit', (evt) => {
   if (isValid) {
     submitButton.disabled = true;
     postData(new FormData(evt.target))
-      .then((response) => {
+      .then(() => {
         closeModal();
-        addUserPicture(response);
         showPostSuccessMessage();
       })
       .catch(() => {

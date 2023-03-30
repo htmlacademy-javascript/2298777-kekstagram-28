@@ -2,8 +2,7 @@ import {renderBigPicture} from './full-picture-render.js';
 import {getData} from './server-api.js';
 import {showRenderErrorMessage} from './messages.js';
 import {showFilter} from './content-filters.js';
-import { debounce } from './functions.js';
-import {initUserPicture} from './user-picture.js';
+import {debounce} from './functions.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
@@ -17,10 +16,6 @@ const renderMiniatures = (photosWithDescriptions) => {
     pictureContainerItem.querySelector('.picture__img').alt = photo.description;
     pictureContainerItem.querySelector('.picture__comments').textContent = photo.comments.length;
     pictureContainerItem.querySelector('.picture__likes').textContent = photo.likes;
-    if (photo.scale || photo.effect) {
-      pictureContainerItem.querySelector('.picture__img').style.scale = photo.scale;
-      pictureContainerItem.querySelector('.picture__img').style.filter = photo.effect;
-    }
 
     pictureContainerItem.addEventListener('click', (evt) => {
       renderBigPicture(evt, photo);
@@ -37,7 +32,6 @@ const renderPictures = () => {
     .then((photosWithDescriptions) => {
       renderMiniatures(photosWithDescriptions);
       showFilter(photosWithDescriptions, debounce(renderMiniatures));
-      initUserPicture(photosWithDescriptions);
     })
     .catch(() => {
       showRenderErrorMessage();
