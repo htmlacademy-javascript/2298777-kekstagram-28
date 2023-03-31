@@ -1,5 +1,5 @@
 import './validation.js';
-import {addListenersOnEffects, resetEffects} from './filter-sliders.js';
+import {addListenersOnEffects, addMiniatureEffectPreview, resetEffects} from './filter-sliders.js';
 import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './functions.js';
 import {addOnScaleButton, resetScale} from './scale-button.js';
 
@@ -40,6 +40,7 @@ function onDocumentKeydown (evt) {
 const showModal = () => {
   uploadForm.querySelector('input[name="scale"]').value = '100%';
   uploadImgPreview.src = URL.createObjectURL(uploadButton.files[0]);
+  addMiniatureEffectPreview();
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);

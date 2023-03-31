@@ -1,13 +1,14 @@
 import {debounce, compareRandomCb, compareCommentsLengthCb, clearMiniatures} from './functions.js';
 
+const FILTERS_COUNT = 3;
+const ACTIVE_SELECTOR = 'img-filters__button--active';
+const RANDOM_MINIATURES_COUNT = 10;
+
 const FiltersId = {
   DEFAULT: '#filter-default',
   RANDOM : '#filter-random',
   DISCUSSED: '#filter-discussed'
 };
-const FILTERS_COUNT = 3;
-const ACTIVE_SELECTOR = 'img-filters__button--active';
-const RANDOM_MINIATURES_COUNT = 10;
 
 const filterContainer = document.querySelector('.img-filters');
 const filterForm = filterContainer.querySelector('.img-filters__form');
