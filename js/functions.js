@@ -37,6 +37,13 @@ const compareRandomCb = () => Math.random() - 0.5;
 
 const compareCommentsLengthCb = (a, b) => b.comments.length - a.comments.length;
 
+const clearMiniatures = () => {
+  const pictures = document.querySelectorAll('.picture');
+  for (let i = 0; i < pictures.length; i++) {
+    pictures[i].remove();
+  }
+};
+
 export {getRandomNumber, isEscapeKeydown,
   stopPropagation, removeEventListenerRest, addEventListenerRest,
-  addStyleToElement, debounce, compareRandomCb, compareCommentsLengthCb};
+  addStyleToElement, debounce, compareRandomCb, compareCommentsLengthCb, clearMiniatures};

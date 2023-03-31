@@ -1,28 +1,28 @@
-const DEFAULT_URL = {
-  get: 'https://28.javascript.pages.academy/kekstagram/data',
-  post: 'https://28.javascript.pages.academy/kekstagram'
+const DefaultUrl = {
+  GET: 'https://28.javascript.pages.academy/kekstagram/data',
+  POST: 'https://28.javascript.pages.academy/kekstagram'
 };
 
-const ERROR_MESSAGES = {
-  get: 'Ошибка получения данных с сервера',
-  post: 'Ошибка отправки данных на сервер'
+const ErrorMessages = {
+  GET: 'Ошибка получения данных с сервера',
+  POST: 'Ошибка отправки данных на сервер'
 };
 
-const getData = (url = DEFAULT_URL.get) =>
+const getData = (url = DefaultUrl.GET) =>
   fetch(url)
     .then((response) => {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error(ERROR_MESSAGES.get);
+        throw new Error(ErrorMessages.GET);
       }
     })
     .catch(() => {
-      throw new Error(ERROR_MESSAGES.get);
+      throw new Error(ErrorMessages.GET);
     });
 
 
-const postData = (body = '',url = DEFAULT_URL.post) =>
+const postData = (body = '',url = DefaultUrl.POST) =>
   fetch(url, {
     method: 'POST',
     body,
@@ -31,11 +31,11 @@ const postData = (body = '',url = DEFAULT_URL.post) =>
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error(ERROR_MESSAGES.post);
+        throw new Error(ErrorMessages.POST);
       }
     })
     .catch(() => {
-      throw new Error(ERROR_MESSAGES.post);
+      throw new Error(ErrorMessages.POST);
     });
 
 
