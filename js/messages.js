@@ -1,6 +1,6 @@
 import {addStyleToElement, isEscapeKeydown, stopPropagation} from './functions.js';
 
-const postSuccesTemplate = document.querySelector('#success').content.querySelector('.success');
+const postSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
 const postErrorTemplate = document.querySelector('#error').content.querySelector('.error');
 const renderErrorStyle = {
   'z-index': '100',
@@ -46,7 +46,7 @@ const addOnCloseListeners = (message, messageButton, messageSelector) => {
 
 const showPostSuccessMessage = () => {
 
-  const successMessage = postSuccesTemplate.cloneNode(true);
+  const successMessage = postSuccessTemplate.cloneNode(true);
   const successButton = successMessage.querySelector('.success__button');
   const successSelector = '.success__inner';
 

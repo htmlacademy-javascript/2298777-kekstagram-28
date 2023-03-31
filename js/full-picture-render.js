@@ -9,14 +9,14 @@ const commentsTemplate = document.querySelector('#comments').content.querySelect
 const socialComments = bigPicture.querySelector('.social__comments');
 const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const commentLoaderButton = bigPicture.querySelector('.comments-loader');
-const comentsCount = bigPicture.querySelector('.social__comment-count');
+const commentsCountElement = bigPicture.querySelector('.social__comment-count');
 
 const createCounterHtml = (commentsShown, commentsCount) => {
-  comentsCount.textContent = '';
+  commentsCountElement.textContent = '';
   const spanItem = document.createElement('span');
   spanItem.classList.add('comments-count');
   spanItem.textContent = commentsCount;
-  comentsCount.append(`${commentsShown} из `,
+  commentsCountElement.append(`${commentsShown} из `,
     spanItem,
     ' комментариев');
 };
@@ -98,6 +98,7 @@ const renderBigPicture = (evt, photo) => {
     document.removeEventListener('keydown', onDocumentKeydown);
     document.body.classList.remove('modal-open');
     commentLoaderButton.removeEventListener('click', onCommentButtonClick);
+    bigPictureCloseButton.removeEventListener('click', closeBigPicture);
   }
 
   getCommentData(comments, numberToShow);

@@ -1,8 +1,3 @@
-const getRandomNumber = (min, max) => {
-  const result = Math.random() * (max - min + 1) + min;
-  return Math.floor(result);
-};
-
 const isEscapeKeydown = (evt) => evt.key === 'Escape';
 
 const stopPropagation = (evt) => evt.stopPropagation();
@@ -19,8 +14,8 @@ const addEventListenerRest = (parent, type, action, ...selectors) => {
   }
 };
 
-const addStyleToElement = (element, stylePropepries) => {
-  for (const [property, value] of Object.entries(stylePropepries)) {
+const addStyleToElement = (element, styleProperties) => {
+  for (const [property, value] of Object.entries(styleProperties)) {
     element.style.setProperty(property, value);
   }
 };
@@ -44,6 +39,5 @@ const clearMiniatures = () => {
   }
 };
 
-export {getRandomNumber, isEscapeKeydown,
-  stopPropagation, removeEventListenerRest, addEventListenerRest,
+export {isEscapeKeydown, stopPropagation, removeEventListenerRest, addEventListenerRest,
   addStyleToElement, debounce, compareRandomCb, compareCommentsLengthCb, clearMiniatures};
