@@ -3,6 +3,7 @@ import {isEscapeKeydown} from './functions.js';
 const NUMBER_OF_VISIBLE_COMMENTS = 5;
 
 let shownComments;
+let firstRender = true;
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsTemplate = document.querySelector('#comments').content.querySelector('.social__comment');
@@ -48,23 +49,21 @@ const createComments = (photo) => {
   return comments;
 };
 
-const hideCommentLoader = (onCommentButtonClick) => {
+const hideCommentLoader = () => {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
-  commentLoaderButton.removeEventListener('click', onCommentButtonClick);
 };
 
-const addCommentLoader = (onCommentButtonClick) => {
+const addCommentLoader = () => {
   bigPicture.querySelector('.comments-loader').classList.remove('hidden');
-  commentLoaderButton.addEventListener('click', onCommentButtonClick);
 };
 
-const addCommentsCount = (comments, onCommentButtonClick) => {
+const addCommentsCount = (comments) => {
   const commentsCount = comments.length;
   createCounterHtml(Math.min(commentsCount, NUMBER_OF_VISIBLE_COMMENTS), comments.length);
   if (commentsCount <= NUMBER_OF_VISIBLE_COMMENTS) {
-    hideCommentLoader(onCommentButtonClick);
+    hideCommentLoader();
   } else {
-    addCommentLoader(onCommentButtonClick);
+    addCommentLoader();
   }
 };
 
@@ -93,18 +92,21 @@ const renderBigPicture = (evt, photo) => {
     }
   }
 
+  if (firstRender) {
+    bigPictureCloseButton.addEventListener('click', closeBigPicture);
+    commentLoaderButton.addEventListener('click', onCommentButtonClick);
+    firstRender = false;
+  }
+
   function closeBigPicture () {
     bigPicture.classList.add('hidden');
     document.removeEventListener('keydown', onDocumentKeydown);
     document.body.classList.remove('modal-open');
-    commentLoaderButton.removeEventListener('click', onCommentButtonClick);
-    bigPictureCloseButton.removeEventListener('click', closeBigPicture);
   }
 
   getCommentData(comments, numberToShow);
   addCommentsCount(comments, onCommentButtonClick);
   addBigPictureData(photo);
-  bigPictureCloseButton.addEventListener('click', closeBigPicture);
   bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
 };

@@ -2,12 +2,6 @@ const isEscapeKeydown = (evt) => evt.key === 'Escape';
 
 const stopPropagation = (evt) => evt.stopPropagation();
 
-const removeEventListenerRest = (parent, type, action, ...selectors) => {
-  for (const selector of selectors) {
-    parent.querySelector(selector).removeEventListener(type, action);
-  }
-};
-
 const addEventListenerRest = (parent, type, action, ...selectors) => {
   for (const selector of selectors) {
     parent.querySelector(selector).addEventListener(type, action);
@@ -28,9 +22,9 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-const compareRandomCb = () => Math.random() - 0.5;
+const compareRandom = () => Math.random() - 0.5;
 
-const compareCommentsLengthCb = (a, b) => b.comments.length - a.comments.length;
+const compareCommentsLength = (a, b) => b.comments.length - a.comments.length;
 
 const clearMiniatures = () => {
   const pictures = document.querySelectorAll('.picture');
@@ -39,5 +33,5 @@ const clearMiniatures = () => {
   }
 };
 
-export {isEscapeKeydown, stopPropagation, removeEventListenerRest, addEventListenerRest,
-  addStyleToElement, debounce, compareRandomCb, compareCommentsLengthCb, clearMiniatures};
+export {isEscapeKeydown, stopPropagation, addEventListenerRest,
+  addStyleToElement, debounce, compareRandom, compareCommentsLength, clearMiniatures};
