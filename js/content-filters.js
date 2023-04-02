@@ -1,4 +1,4 @@
-import {debounce, compareRandomCb, compareCommentsLengthCb, clearMiniatures} from './functions.js';
+import {debounce, compareRandom, compareCommentsLength, clearMiniatures} from './functions.js';
 
 const FILTERS_COUNT = 3;
 const ACTIVE_SELECTOR = 'img-filters__button--active';
@@ -27,7 +27,7 @@ const addActiveFilterClass = (id) => {
   filterForm.querySelector(id).classList.add(ACTIVE_SELECTOR);
 };
 
-const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, id, sortCb, numberToShow = photosWithDescriptions.length) => {
+const filterMiniatures = (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, id, sortCb, numberToShow = photosWithDescriptions.length) => {
   if (!checkActiveFilter(id)) {
     clearMiniaturesDebounced();
     if (typeof sortCb === 'function') {
@@ -41,13 +41,13 @@ const createFilteredMiniatures = (photosWithDescriptions, renderMiniatures, clea
 
 const setFilterListeners = {
   [FiltersId.DEFAULT]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DEFAULT);
+    filterMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DEFAULT);
   },
   [FiltersId.RANDOM]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.RANDOM, compareRandomCb, RANDOM_MINIATURES_COUNT);
+    filterMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.RANDOM, compareRandom, RANDOM_MINIATURES_COUNT);
   },
   [FiltersId.DISCUSSED]: (photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced) => () => {
-    createFilteredMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DISCUSSED, compareCommentsLengthCb);
+    filterMiniatures(photosWithDescriptions, renderMiniatures, clearMiniaturesDebounced, FiltersId.DISCUSSED, compareCommentsLength);
   }
 };
 

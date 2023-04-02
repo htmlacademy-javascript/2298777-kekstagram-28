@@ -1,3 +1,5 @@
+const NUMBER_OF_FILTERS = 6;
+
 const EffectsName = {
   'effects__preview--chrome': ['grayscale', ''],
   'effects__preview--sepia': ['sepia', ''],
@@ -122,7 +124,7 @@ const addListenersOnEffects = () => {
   effectLevelSlider.classList.add('hidden');
   effectLevelField.classList.add('hidden');
   effectLevelSlider.noUiSlider.on('update', onSliderUpdate);
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < NUMBER_OF_FILTERS; i++) {
     effectsList.children[i].addEventListener('click', sliderSettings[i]);
   }
 };
@@ -136,7 +138,7 @@ const resetEffects = () => {
 };
 
 const addMiniatureEffectPreview = () => {
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < NUMBER_OF_FILTERS; i++) {
     effectsPreviews[i].style.backgroundImage = `url(${URL.createObjectURL(uploadButton.files[0])})`;
   }
 };

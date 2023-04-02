@@ -1,9 +1,9 @@
 import './validation.js';
 import {addListenersOnEffects, addMiniatureEffectPreview, resetEffects} from './filter-sliders.js';
-import {addEventListenerRest, isEscapeKeydown, removeEventListenerRest, stopPropagation} from './functions.js';
+import {addEventListenerRest, isEscapeKeydown, stopPropagation} from './functions.js';
 import {addOnScaleButton, resetScale} from './scale-button.js';
 
-const ESC_RESISTANT_CLASS = ['input[name="hashtags"]', 'textarea[name="description"]'];
+const ESC_RESISTANT_CLASSES = ['input[name="hashtags"]', 'textarea[name="description"]'];
 
 const uploadButton = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
@@ -23,7 +23,6 @@ const closeModal = (isErrorOccurred = false) => {
     if (pristineError !== null) {
       pristineError.style.display = 'none';
     }
-    removeEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
   }
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
@@ -44,7 +43,6 @@ const showModal = () => {
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-  addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASS);
 };
 
 const createUploadForm = () => {
@@ -52,6 +50,7 @@ const createUploadForm = () => {
   uploadImgPreview.src = '';
   addOnScaleButton();
   addListenersOnEffects();
+  addEventListenerRest(uploadModal, 'keydown', stopPropagation, ...ESC_RESISTANT_CLASSES);
 
   uploadModalCloseButton.addEventListener('click', () => {
     closeModal();
