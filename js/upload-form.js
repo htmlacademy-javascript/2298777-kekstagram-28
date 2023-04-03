@@ -11,18 +11,16 @@ const uploadModalCloseButton = uploadModal.querySelector('#upload-cancel');
 const uploadImgPreview = uploadModal.querySelector('.img-upload__preview').children[0];
 const uploadForm = document.querySelector('.img-upload__form');
 
-const closeModal = (isErrorOccurred = false) => {
-  if (!isErrorOccurred) {
-    resetScale();
-    resetEffects();
-    uploadImgPreview.src = '';
-    uploadButton.value = '';
-    uploadForm.querySelector('input[name="hashtags"]').value = '';
-    uploadForm.querySelector('textarea[name="description"]').value = '';
-    const pristineError = uploadModal.querySelector('.pristine-error');
-    if (pristineError !== null) {
-      pristineError.style.display = 'none';
-    }
+const closeModal = () => {
+  resetScale();
+  resetEffects();
+  uploadImgPreview.src = '';
+  uploadButton.value = '';
+  uploadForm.querySelector('input[name="hashtags"]').value = '';
+  uploadForm.querySelector('textarea[name="description"]').value = '';
+  const pristineError = uploadModal.querySelector('.pristine-error');
+  if (pristineError !== null) {
+    pristineError.style.display = 'none';
   }
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');

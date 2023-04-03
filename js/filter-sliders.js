@@ -58,7 +58,7 @@ const deleteHiddenClass = () => {
   imgUploadPreview.className = '';
 };
 
-const onSliderUpdate = () => {
+const updateOnSlider = () => {
   effectLevelInput.value = effectLevelSlider.noUiSlider.get();
   if (imgUploadPreview.className) {
     const effectOptions = EffectsName[imgUploadPreview.className];
@@ -123,7 +123,7 @@ const addListenersOnEffects = () => {
   });
   effectLevelSlider.classList.add('hidden');
   effectLevelField.classList.add('hidden');
-  effectLevelSlider.noUiSlider.on('update', onSliderUpdate);
+  effectLevelSlider.noUiSlider.on('update', updateOnSlider);
   for (let i = 0; i < NUMBER_OF_FILTERS; i++) {
     effectsList.children[i].addEventListener('click', sliderSettings[i]);
   }

@@ -49,7 +49,6 @@ uploadForm.addEventListener('submit', (evt) => {
         showPostSuccessMessage();
       })
       .catch(() => {
-        closeModal(true);
         showPostErrorMessage();
       })
       .finally(() => {
