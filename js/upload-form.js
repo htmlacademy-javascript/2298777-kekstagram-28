@@ -67,4 +67,4 @@ const createUploadForm = () => {
 
 };
 
-export {createUploadForm, closeModal, showModal};
+export {createUploadForm, closeModal, showModal, onDocumentKeydown as onUploadModalKeydown};
