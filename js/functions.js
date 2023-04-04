@@ -14,7 +14,7 @@ const addStyleToElement = (element, styleProperties) => {
   }
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const makeDebounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -34,4 +34,4 @@ const clearMiniatures = () => {
 };
 
 export {isEscapeKeydown, stopPropagation, addEventListenerRest,
-  addStyleToElement, debounce, compareRandom, compareCommentsLength, clearMiniatures};
+  addStyleToElement, makeDebounce, compareRandom, compareCommentsLength, clearMiniatures};

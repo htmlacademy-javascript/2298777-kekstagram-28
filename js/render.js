@@ -2,7 +2,7 @@ import {renderBigPicture} from './full-picture-render.js';
 import {getData} from './server-api.js';
 import {showRenderErrorMessage} from './messages.js';
 import {showFilter} from './content-filters.js';
-import {debounce} from './functions.js';
+import {makeDebounce} from './functions.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
@@ -31,7 +31,7 @@ const renderPictures = () => {
   getData()
     .then((photosWithDescriptions) => {
       renderMiniatures(photosWithDescriptions);
-      showFilter(photosWithDescriptions, debounce(renderMiniatures));
+      showFilter(photosWithDescriptions, makeDebounce(renderMiniatures));
     })
     .catch(() => {
       showRenderErrorMessage();
