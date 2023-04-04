@@ -50,7 +50,7 @@ const originalEffect = effectsList.querySelector('#effect-none');
 const uploadButton = document.querySelector('#upload-file');
 const effectsPreviews = effectsList.querySelectorAll('.effects__preview');
 
-const deleteHiddenClass = () => {
+const removeHiddenClass = () => {
   if (effectLevelSlider.classList.contains('hidden')) {
     effectLevelSlider.classList.remove('hidden');
     effectLevelField.classList.remove('hidden');
@@ -76,7 +76,7 @@ const updateEffectSlider = (isOriginalPhoto, minSlider, maxSlider, step, effectC
       effectLevelSlider.classList.add('hidden');
     }
   } else {
-    deleteHiddenClass();
+    removeHiddenClass();
     effectLevelSlider.noUiSlider.updateOptions({
       start: maxSlider,
       range: {

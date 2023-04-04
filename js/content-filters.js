@@ -1,4 +1,4 @@
-import {debounce, compareRandom, compareCommentsLength, clearMiniatures} from './functions.js';
+import {makeDebounce, compareRandom, compareCommentsLength, clearMiniatures} from './functions.js';
 
 const FILTERS_COUNT = 3;
 const ACTIVE_SELECTOR = 'img-filters__button--active';
@@ -53,7 +53,7 @@ const setFilterListeners = {
 
 const showFilter = (photosWithDescriptions, renderMiniatures) => {
   filterContainer.classList.remove('img-filters--inactive');
-  const clearMiniatureDebounced = debounce(clearMiniatures);
+  const clearMiniatureDebounced = makeDebounce(clearMiniatures);
   for (const key in FiltersId) {
     filterForm.querySelector(FiltersId[key]).addEventListener('click',
       setFilterListeners[FiltersId[key]](photosWithDescriptions, renderMiniatures, clearMiniatureDebounced)
